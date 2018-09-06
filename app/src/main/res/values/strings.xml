@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">IntentApplication</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="select_file">Select File</string>
+    <string name="introdueix_web">Introdueix web</string>
+    <string name="introdueix_tel_fon">Introdueix telèfon</string>
+    <string name="data">Data</string>
+    <string name="hora">Hora</string>
+    <string name="introdueix_text">Introdueix text</string>
+    <string name="go">GO</string>
+    <string name="program">PROGRAM</string>
+    <string name="photo_you_took">Photo you took</string>
+</resources>
