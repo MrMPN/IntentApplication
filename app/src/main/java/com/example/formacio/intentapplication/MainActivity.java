@@ -2,6 +2,7 @@ package com.example.formacio.intentapplication;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.provider.AlarmClock;
 import android.provider.MediaStore;
@@ -80,6 +81,22 @@ public class MainActivity extends AppCompatActivity {
                 dialPhoneNumber();
             }
         });
+
+        alarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //createAlarm();
+            }
+        });
+
+        textButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), TextActivity.class);
+                intent.putExtra("text", inputText.getText().toString());
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -115,15 +132,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void createAlarm(String message, int hour, int minutes) {
-
-        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
-                .putExtra(AlarmClock.EXTRA_HOUR, hour)
-                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
+//    public void createAlarm() {
+//        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+//                .putExtra(AlarmClock.EXTRA_HOUR, hour)
+//                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+//        if (intent.resolveActivity(getPackageManager()) != null) {
+//            startActivity(intent);
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -3,6 +3,7 @@
     package="com.example.formacio.intentapplication">
 
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
@@ -18,10 +19,9 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
-
         </activity>
+        <activity android:name=".TextActivity"></activity>
     </application>
 
 </manifest>
