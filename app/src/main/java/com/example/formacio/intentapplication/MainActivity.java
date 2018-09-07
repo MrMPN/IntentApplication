@@ -68,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
         alarmButton = findViewById(R.id.alarmButton);
         textButton = findViewById(R.id.randomButton);
 
+        final TimePickerDialog mTimePicker = new TimePickerDialog(MainActivity.this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String curTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                        inputHour.setText(curTime);
+                        hours = selectedHour;
+                        minutes = selectedMinute;
+                    }
+                },0, 0, true);
+
         takePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,17 +126,6 @@ public class MainActivity extends AppCompatActivity {
         inputHour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(MainActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        String curTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                        inputHour.setText(curTime);
-                        hours = selectedHour;
-                        minutes = selectedMinute;
-                    }
-                },0, 0, true);
                 mTimePicker.show();
             }
         });
