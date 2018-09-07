@@ -76,27 +76,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/webText" />
 
-        <EditText
+        <Spinner
             android:id="@+id/dateText"
-            android:layout_width="125dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:ems="10"
-            android:hint="@string/data"
-            android:inputType="date"
             app:layout_constraintEnd_toStartOf="@+id/hourText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="@+id/phoneText"
             app:layout_constraintTop_toBottomOf="@+id/phoneText" />
 
-        <EditText
+        <Button
             android:id="@+id/hourText"
-            android:layout_width="125dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/hora"
-            android:inputType="time"
+            android:text="@string/set_time"
             app:layout_constraintBottom_toBottomOf="@+id/dateText"
             app:layout_constraintEnd_toEndOf="@+id/phoneText"
             app:layout_constraintHorizontal_bias="0.5"
@@ -173,5 +170,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/randomText" />
+
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

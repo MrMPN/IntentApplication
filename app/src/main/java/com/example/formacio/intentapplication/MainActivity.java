@@ -1,8 +1,9 @@
 package com.example.formacio.intentapplication;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.provider.AlarmClock;
 import android.provider.MediaStore;
@@ -10,12 +11,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import com.example.formacio.intentapplication.utilities.DateUtils;
 
 import java.io.IOException;
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     final int REQUEST_IMAGE_CAPTURE = 1;
@@ -25,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
     Button selectFileButton;
     EditText inputWeb;
     EditText inputPhone;
-    EditText inputDate;
-    EditText inputHour;
+    Spinner spinnerDate;
+    Button inputHour;
     EditText inputText;
     Button webButton;
     Button phoneButton;
     Button alarmButton;
     Button textButton;
+    ArrayList<Integer> dayOfWeek;
+    int hours;
+    int minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         selectFileButton = findViewById(R.id.selectFile);
         inputWeb = findViewById(R.id.webText);
         inputPhone = findViewById(R.id.phoneText);
-        inputDate = findViewById(R.id.dateText);
+        spinnerDate = findViewById(R.id.dateText);
         inputHour = findViewById(R.id.hourText);
         inputText = findViewById(R.id.randomText);
         webButton = findViewById(R.id.webButton);
@@ -85,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         alarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //createAlarm();
+                createAlarm();
             }
         });
 
@@ -97,6 +111,44 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        inputHour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(MainActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String curTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                        inputHour.setText(curTime);
+                        hours = selectedHour;
+                        minutes = selectedMinute;
+                    }
+                },0, 0, true);
+                mTimePicker.show();
+            }
+        });
+
+        setSpinner();
+        spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int selected =  parent.getSelectedItemPosition();
+                dayOfWeek = DateUtils.stringToDate(selected);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void setSpinner(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.days_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDate.setAdapter(adapter);
     }
 
 
@@ -132,14 +184,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public void createAlarm() {
-//        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
-//                .putExtra(AlarmClock.EXTRA_HOUR, hour)
-//                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
-//        if (intent.resolveActivity(getPackageManager()) != null) {
-//            startActivity(intent);
-//        }
-//    }
+    public void createAlarm() {
+        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+                .putExtra(AlarmClock.EXTRA_DAYS, dayOfWeek)
+                .putExtra(AlarmClock.EXTRA_HOUR, hours)
+                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
