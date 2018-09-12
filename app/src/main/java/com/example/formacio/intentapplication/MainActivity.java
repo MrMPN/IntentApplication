@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -142,7 +143,20 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+//        takenPhoto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (takenPhoto.getTag() != null) {
+//                    Uri uri = (Uri) takenPhoto.getTag();
+//                    Intent intent = new Intent(v.getContext(), ImageActivity.class);
+//                    intent.putExtra("imageUri", uri);
+//                    startActivity(intent);
+//                }
+//            }
+//        });
     }
+
 
     private void setSpinner(){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -169,9 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void openWebpage(){
         String webpage = inputWeb.getText().toString();
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webpage));
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
+        if (Patterns.WEB_URL.matcher(webpage).matches()) {
+            if (!webpage.startsWith("http|https")){
+                webpage = "http://" + webpage;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(webpage));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
         }
     }
 
@@ -194,29 +213,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void setImage(int resultCode, Intent data){
+        if (resultCode == RESULT_OK && data.hasExtra("data")){
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            if (bitmap != null) {
+                takenPhoto.setImageBitmap(bitmap);
+            }
+        }
+    }
+
+    public void getImage(int resultCode, Intent data){
+        if (resultCode == RESULT_OK){
+            Uri imageUri = data.getData();
+            try {
+                Bitmap bitmap= MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                takenPhoto.setImageBitmap(bitmap);
+                //takenPhoto.setTag(imageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK && data.hasExtra("data")){
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    if (bitmap != null) {
-                        takenPhoto.setImageBitmap(bitmap);
-                    }
-                }
+                setImage(resultCode, data);
                 break;
 
             case REQUEST_IMAGE_GET:
-                if (resultCode == RESULT_OK){
-                    Uri imageUri = data.getData();
-                    try {
-                        Bitmap bitmap= MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                        takenPhoto.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                getImage(resultCode, data);
                 break;
         }
     }
