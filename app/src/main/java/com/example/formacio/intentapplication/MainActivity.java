@@ -143,18 +143,6 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-//        takenPhoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (takenPhoto.getTag() != null) {
-//                    Uri uri = (Uri) takenPhoto.getTag();
-//                    Intent intent = new Intent(v.getContext(), ImageActivity.class);
-//                    intent.putExtra("imageUri", uri);
-//                    startActivity(intent);
-//                }
-//            }
-//        });
     }
 
 
@@ -228,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap= MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                 takenPhoto.setImageBitmap(bitmap);
-                //takenPhoto.setTag(imageUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }

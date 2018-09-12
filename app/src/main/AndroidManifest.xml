@@ -26,8 +26,6 @@
         <activity
             android:name=".TextActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".ImageActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>
